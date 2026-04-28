@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happy Birthday!</title>
+
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+            position: relative;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            color: #ff6f61;
+            font-size: 32px;
+        }
+
+        .emoji {
+            font-size: 40px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .name {
+            font-weight: bold;
+            color: #ff6f61;
+        }
+
+        .button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: #ff6f61;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+            .button:hover {
+                background: #ff3b2e;
+            }
+
+        /* Photo burst style */
+        .photo {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            pointer-events: none;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popPhoto 5s ease forwards;
+            z-index: 1;
+        }
+
+        @keyframes popPhoto {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1) rotate(15deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(0.8) rotate(30deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Music -->
+    <audio id="bdayMusic" autoplay loop>
+        <source src="audio/pantropiko.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="card">
+        <div class="emoji">🎉🎂🎈</div>
+        <h1>Happy Birthday Joanaaa!</h1>
+
+        <p>
+            Wishing you a year full of wins, joy, and amaze amaze amaze moments! Just want to let you know na nakakahawa yung energy mo—you bring life to the team. Kahit minsan lowbat ka na, you still keep your composure and talagang awra pa rin. Thank you for that.
+        </p>
+
+        <p>
+            Amaze amaze amaze talaga ang iyong skills, not just at work, pati na rin sa streets pare 😄 Salamat sa pagiging tour guide ng team, mapa-Cubao man or Manila. Sana next naman Pasig hahaha.
+        </p>
+
+        <p>
+            Malapit na tayo (yup 24 lang me) pumasok sa trentahin phase. I hope you keep yourself mentally and physically healthy kahit challenging.
+        </p>
+
+        <p>
+            If you ever need any help, you always have your Kuya EJ. Soaper cringe talaga ako sa “Kuya” kasi bunso ako 😭
+        </p>
+
+        <p>
+            You deserve all the happiness today and always ✨
+        </p>
+
+        <div class="button" onclick="celebrate()">✨ Keep Shining! ✨</div>
+
+        <p style="font-size: 14px; margin-top: 15px;">
+            — EJ
+        </p>
+    </div>
+
+    <script>
+        const imageList = [
+            "images/pic1.jpg",
+            "images/pic2.jpg",
+            "images/pic3.jpg",
+            "images/pic4.jpg",
+            "images/pic5.jpg",
+            "images/pic6.jpg",
+            "images/pic7.jpg",
+            "images/pic8.jpg",
+            "images/pic9.jpg",
+            "images/pic10.jpg",
+            "images/pic11.jpg",
+            "images/pic12.jpg",
+            "images/pic13.jpg",
+            "images/pic14.jpg",
+            "images/pic15.jpg",
+            "images/pic16.jpg",
+            "images/pic17.jpg",
+            "images/pic18.jpg",
+            "images/pic19.jpg",
+            "images/pic20.jpg",
+            "images/pic21.jpg",
+            "images/pic22.jpg",
+            "images/pic23.jpg",
+            "images/pic24.jpg",
+            "images/pic25.jpg",
+            "images/pic26.jpg",
+            "images/pic27.jpg",
+            "images/pic28.jpg",
+            "images/pic29.jpg",
+            "images/pic30.jpg",
+        ];
+
+        let photoInterval = null; // controls continuous spawning
+
+        // Confetti on load
+        window.onload = function () {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+        };
+        let shuffledImages = [...imageList];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        shuffle(shuffledImages);
+
+        function spawnOnePhoto() {
+            if (shuffledImages.length === 0) {
+                shuffle(imageList);
+                shuffledImages = [...imageList]; // reset after all used
+            }
+
+            const img = document.createElement("img");
+            img.src = shuffledImages.pop(); // guarantees no repeats until all used
+            img.className = "photo";
+
+            img.style.left = Math.random() * window.innerWidth + "px";
+            img.style.top = Math.random() * window.innerHeight + "px";
+
+            document.body.appendChild(img);
+
+            setTimeout(() => {
+                img.remove();
+            }, 15500);
+        }
+
+        function startPhotoRain() {
+            if (photoInterval !== null) return; // prevent duplicates
+
+            photoInterval = setInterval(() => {
+                spawnOnePhoto();
+            }, 150); // speed (lower = more intense)
+        }
+
+        function stopPhotoRain() {
+            clearInterval(photoInterval);
+            photoInterval = null;
+        }
+
+        function celebrate() {
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 }
+            });
+
+            startPhotoRain();
+
+            // Optional: auto-stop after 10 seconds
+            setTimeout(() => {
+                stopPhotoRain();
+            }, 28000);
+        }
+
+        // Ensure music plays after interaction
+        document.addEventListener('click', function () {
+            document.getElementById('bdayMusic').play();
+        });
+    </script>
+
+</body>
+</html>
